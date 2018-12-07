@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<!-- CLOUD COMPUTING PROJECT WEB REPORT -->
+<style>
+body, html {
+  height: 100%;
+  margin: 0;
+  font: 400 15px/1.8 "Lato", Courier;
+  color: #777;
+  
+}
+
+.img{
+  position: relative;
+  opacity: 0.65;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.img {
+  min-height: 28%;
+}
+
+.caption {
+  position: absolute;
+  left: 0;
+  top: 10%;
+  width: 92%; 
+  text-align: center;
+  color: #000;
+}
+
+.caption {
+  background-color: #220C08;
+  color: #fff;
+  padding: 18px;
+  font-size: 25px;
+}
+
+h3 {
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  font: 20px "Lato", Courier;
+  color: #111;
+}
+
+a {
+    color: white;
+}
+
+</style>
+</head>
+<body data-gr-c-s-loaded="true">
+
+<div class="img container">
+  <div class="caption" style="padding:60px;">
+    
+    <div class="row" style="font-weight:bold;">
+      <strong>Beer Recommendation System using Collaborative Filtering</strong>
+    </div>
+    <div class="row" style="font-size:20px; ">
+      ITCS 6190 - Cloud Computing For Data Analysis - UNC, Charlotte
+    </div>
+  </div>
+</div>
+
+<div style="position:relative;">
+  <div style="color:#ddd;background-color:#A33B27;text-align:center;padding:50px 80px;text-align: justify;">
+    <h3 style="text-align:center;color:#ddd"><b>WHY RECOMMENDER SYSTEMS ?</b> </h3>
+	<p> Due to enormous amount of data present in a web application or shopping carts, recommendations
+    are used to engage users and helps in saving good amount of time to look for similar products which
+    were interested by them. Moreover, Recommender systems helps in maximizing the profits of an
+    organization by suggesting relevant items which might be purchased by the user.</p>
+  </div>
+</div>
+
+<div style="color: white;background-color:#333333;text-align:center;padding:50px 80px;text-align: justify;">
+  <h3 style="text-align:center; color:white"><b>CONTEXT AND MOTIVATION</b></h3>
+<p>Our project aims to build a recommender system for the given data set using user behavior learning.
+Collaborative filtering technique is one such method used to display recommendations using user
+input. Recommender systems play a major role in increasing user interaction with applications by
+recommending useful items to the user based on the previous history. </p><p>
+
+  </p>
+</div>
+
+<div style="position:relative;">
+  <div style="color:#ddd;background-color:#A33B27;text-align:center;padding:50px 80px;text-align: justify;">
+    <h3 style="text-align:center;color:#ddd"><b>DATA SET USED</b></h3>
+  <p> Data set has a major role to play in building recommender systems. Data set shouldn’t contain null or empty tuples. For this project we are using beer review data from social website (Beer Advocate). This
+    data set has ratings for each beer in different aspects such as aroma, appearance, taste, palate &
+    overall rating with 1,586,614 records.</p>
+ <ul>
+      <li>
+       <a href="https://data.world/login?next=%2Fsocialmediadata%2Fbeeradvocate%2Fworkspace%2Ffile%3Ffilename%3Dbeer_reviews.csv">Dataset-Source</a>		
+      </li> 
+    </ul>
+  </div>
+</div>
+
+<div style="position:relative;">
+  <div style="color:#ddd;background-color:#333333;text-align:center;padding:50px 80px;text-align: justify;">
+    <h3 style="text-align:center;color:#ddd"><b>ALGORITHM AND IMPLEMENTATION USING PYTHON & SPARK</b></h3>
+    <ul>
+      <h3 style="text-align:center;color:#ddd"><u>USER-USER RECOMMENDATION (FIRST COLLABORATIVE ALGORITHM):</u></h3>
+		<ul>
+		<li>
+        <p>For this recommender system we are using <b>Matrix factorization</b> method with stochastic gradient. The model is used to estimate matrix which approximates to rating matrix (input to the model).
+          <br>
+          
+          <li>
+        In collaborative filtering , data about the ratings by the user and by other users is leveraged to recommend products. For instance , if a user 'A' rates a product high and some other user'B' also rates the same product high , then it is possible that  'A' may probably like the other products that are highly rated by 'B' and vice-versa.<br><br>
+        <u><b>FORMULA:</b></u></li>
+        <p></p>
+      
+        <p style="text-align:center;">
+          <img src="./user.png" style="width:350px; height: 25%;"> <br>
+          R is the rating matrix (This matrix is formed when the user inputs the preferences). <br>
+    	  P is a latent feature matrix of the user and features (aroma, taste, appearance, palate, overall rating).<br>
+    	  Q is latent feature matrix of Beers and features.<br>
+    	  R` is built with matrix factorization.<br><br>
+        </p></li>
+
+        <u><b>DATA PRE-PROCESSING</b></u> -<br>
+		• <u>BeerId</u>: This column had the unique identifiers given to each beer but the problem with these identifiers was , they were not serialized. The total number of unique beers was 21,467 were as the identifiers were as large as 65,789. using this identifiers could drastically increase the computation of the model.so new identifiers were assigned according to beerID ranging from 0 – 21,466.<br></br>
+		
+		• <u>userId</u>: same was the case with this column , so new identifiers were assigned according to userId ranging from 0 -47345. <u>review_appearance</u>: this column had appearance rating given by users, <u>review_aroma</u>:this column had aroma rating given by users, <u>review_palate</u>:this column had palate rating given by users, <u>review_taste</u>:this column had taste rating given by users, <u>review_overall</u>:this column had overall rating given by users<br></br>
+
+		<u><b>STEP 2</b></u> -<br>
+		• Users are asked to give their preference about taste, palate, appearance and weights are calculated based on the it.<br></br>
+		• Rating(weighted) = Rating (overall)/2 +{Rating (Aroma) * weight of aroma + Rating (taste) * weight of taste + Rating (appearance) * weight of appearance} /(sum of all the weights * 2)<br></br>
+
+		<u><b>STEP 3</b></u> -<br>
+		• Implementation of prediction method: using the biases , prediction for each row is calculated by multiplying a row in P matrix with column in Q matrix.<br></br>
+		• Implementation of stochastic gradient method : Prediction is used and error is calculated which is then used to update the biases , P and Q matrices.<br></br>
+		• Implementation of complete matrix method: which returns complete matrix by multiplying P and Q.<br></br>
+
+		<u><b>STEP 4</b></u> -<br>
+		• Implementation square error method : calculates and returns the error between predicted matrix from the complete matrix function and known rating matrix for each iteration.<br></br>
+		• Implementation of Train function : this function calls all the above mentioned method for a specified number of iterations.<br></br>
+		• Implementation of get_user_recommendation method: this methods takes the output of the above model (in form of a list) and retrieve the names of the beers and prints them to the console.<br>
+		
+		<br><u><b>RESULTS</b></u> -<br>
+		• Here are some of the test cases results displayed by the system -<br></br>
+		• We parse the arguments in such a way that :<br>
+		<i>command</i> : python user-user.py johnmichaelsen 2  2  1  2<br></br>
+		• The above command display's the recommendations for the user whose profilename is <b>"johnmichaelsen"</b><br>
+
+		<p style="text-align:center;">
+          <img src="./5.png" style="width:400px; height: 25%;"><br>
+        </p></li>
+
+    <br>
+   
+   <div style="position:relative;">
+  <div style="color:#ddd;background-color:#A33B27;text-align:center;padding:50px 80px;text-align: justify;">
+    <h3 style="text-align:center;color:#ddd"><u>ITEM-ITEM RECOMMENDATION (SECOND COLLABORATIVE ALGORITHM):</u></h3>
+   <li>
+        <p>
+          Item -Item collaborative filtering is one such recommendation techniques used to recommend items similar to those which were rated by the user or interested by the user in the past. This method is similar to the user-user collaborative filtering technique where the similarity between items is measured and predictions were made to those items for a particular user and analyze whether he is interested .</p>
+        
+          <p style="text-align:center;">
+          <img src="./item.png" style="width:500px; height: 25%;">
+        </p></li>
+
+        <u><b>DATA PRE-PROCESSING</b></u> -<br>
+		• The data which we chose is beer-data set to build the Recommender system. Though there are many features in the data, we use only the informative ones such as review_overall, review_taste etc. We eliminated other subjective information like brewery name, usernames,beer-style etc.<br></br>
+		• Generate unique id's for beers and users using the groupBy method in python and created a new data file.<br></br>
+		• Once the data is ready to facilitate the purpose of distributed computing in spark we hosted the data in the cluster.<br></br>
+
+		<u><b>STEP 2</b></u> -<br>
+		• Make user beer pairs which include ratings. (user, beer name, rating given).<br></br>
+		• This rating is aggregate of all the ratings (aroma, appearance, palate, taste) . Rating is calculated in such a way that user need to define their preferences. We assumed that overall rating is given preference by every user and preferences for other features are to be passed by user.<br></br>
+
+		<p style="text-align:center;">
+          <img src="./1.png" style="width:500px; height: 25%;">
+        </p></li>
+
+		• The above shows some probable scenarios for user input preferences. Then the overall weighted sum of rating is calculated using the below method:
+		  Overall weighted rating  (for case1)=  (2*(review_overall)+2*(review_taste)+1*(review_appearance)+1*(review_aroma)+2*(review_palate))/2+2+1+1+2<br></br>
+
+		<u><b>STEP 3 (FORMING SIMILARITY PAIRS)</b></u> -<br>
+		• Once we have all the user beer pairs we need to form similarity groups for all the beers which were presented in the data set.<br></br>
+		• For each user combinations of the items he rated are made and store their ratings as (beer1,beer2) , (rating1,rating2)<br></br>
+		• Once for each user the similarity pairs are formed we calculate the similarity using cosine similarity.<br></br>
+		• The computational formula for cosine similarity is.<br></br>
+
+		<p style="text-align:center;">
+          <img src="./2.png" style="width:400px; height: 25%;"><br>
+          here {i= 1,2,3,....n} which is user's who rated both A and B 
+        </p></li>
+
+        <u><b>STEP 4 (GENERATING RECOMMENDERS)</b></u> -<br>
+		• Once the similarity score is formed, we need to build the predictions of beers which were not rated by every user.<br></br>
+		• For this, we choose the similarity pair of beer which is rated by the user and check whether the beers in similarity group are rated by user.<br></br>
+		• If not, then we compute the predicted rating and store them. This process is used for all the respective similarity groups of beers rated by user.<br></br>
+		• Once we are done with all the beers rated by the user, we know to sort the results based on predicted ratings.<br></br>
+		• These beers which have highest predicted ratings are most recommended to a user.<br></br>
+		• The computational formula of predicted ratings for an item of the user is :<br></br>
+
+		<p style="text-align:center;">
+          <img src="./formula.png" style="width:300px; height: 25%;"><br>
+        Here S is the similarity score of Item u with item N <br>R is the rating given by the user u for item N <br>N can be subset of items which have some similarity score with respect to item i
+        </p></li>
+
+        <br><u><b>RESULTS</b></u> -<br>
+		• Here are some of the test cases results displayed by the system -<br></br>
+		• We parse the arguments in such a way that :<br>
+		<i>command</i> : spark-submit recommender.py /user/amekala/beer_input/beer_data.csv beer_items.txt  23203  2  1  2  1<br></br>
+		• The above command display's the recommendations for the user with id '23203' whose profilename is <b>"northyorksammy"</b><br></br>
+
+		<p style="text-align:center;">
+          <img src="./3.png" style="width:500px; height: 25%;"><br>
+        </p></li>
+
+        • You can observe when the user preferred aroma and taste rather than other features then <head></head>/she are recommended some set of beers whose integrated rating is more. The below results show the beers when the user prefers appearance and taste rather than pallate and aroma. You can observe the results are different as the beers have a different integrated rating with respect to user preferences. <br></br>
+        • <i>command</i> :  spark-submit recommender.py /user/amekala/beer_input/beer_data.csv beer_items.txt  23203  1 2  1  2 <br>
+
+		 <p style="text-align:center;">
+          <img src="./4.png" style="width:650px; height: 25%;"><br>
+        </p></li>
+
+     </div>
+</div>
+
+<br>
+	
+</ul>
+
+  <div style="position:relative;">
+  <div style="color:#ddd;background-color:#000000;text-align:center;padding:40px 70px;text-align: justify;">
+    <h3 style="text-align:center;color:white"><b>COMPARISON OF MODELS</b></h3>
+  <div class="row" style="font-size:20px;">
+  • Test cases are chosen based on the number of reviews. All the users in these test cases have more than 100 reviews in the dataset.
+
+  <p style="text-align:center;">
+  	<b>1. Item-Item recommendations:</b> For user <b>'northyorksammy'</b> with the weights 1 1 1 1  : 
+          <img src="./6item.png" style="width:650px; height: 25%;"><br>
+          <b>User-User Recommendations:</b>
+        </p></li>
+
+        
+   <p style="text-align:center;">
+          <img src="./7user.png" style="width:650px; height: 25%;"><br>
+        </p></li>
+
+        <p style="text-align:center;">
+  	<b>2. Item-Item recommendations:</b> For user <b>'mikesgroove'</b> with the weights 1 1 1 1  :<br></br>
+          <img src="./8item.png" style="width:650px; height: 25%;"><br>
+          <b>User-User Recommendations:</b>
+        </p></li>
+
+        
+   <p style="text-align:center;">
+          <img src="./9user.png" style="width:650px; height: 25%;"><br>
+          <br><b>As seen in the above comparison results, The recommendations from these two models have no or very few matches. This mainly has to do with the way these models are designed and the factors that are taken into consideration to give recommendations.<b>
+        </p></li>
+
+
+  </div>
+  </div>
+  </div>
+<br>
+  <div style="position:relative;">
+  <div style="color:#ddd;background-color:#A33B27;text-align:center;padding:40px 70px;text-align: justify;">
+    <h3 style="text-align:center;color:white"><b>TEAM MEMBERS AND RESPONSIBILITIES</b></h3>
+  <div class="row" style="font-size:20px;">
+  <span style="font-style:italic;"><b>Anvesh Mekala</b> [Item-Item recommendation model]</span> 
+	<br> <span style="font-style:italic;"><b>Sai Charan Singh Thakur</b> [User-User recommendation model]</span> 
+	<br>  <span style="font-style:italic;"><b>Suraj Mahesh Shetty</b> [Python UI, Data pre processing, Data cleaning & Final Web Report]</span> 
+  </div>
+  </div>
+  </div>
+
+</body></html>
